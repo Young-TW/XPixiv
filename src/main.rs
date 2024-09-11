@@ -1,7 +1,7 @@
 #[cfg(feature = "cli")]
 use clap::Parser;
 #[cfg(feature = "cli")]
-use cli::{artwork_download, rank_downloader, user_download, Cli, Commands};
+use cli::{artwork_download, rank_downloader, user_download, download_all_following, Cli, Commands};
 #[cfg(feature = "tui")]
 use crossterm::{
     event::{read, DisableMouseCapture, EnableMouseCapture, Event, KeyCode},
@@ -44,6 +44,7 @@ async fn cli() -> x_pixiv_lib::Result<()> {
         Commands::Rank(args) => rank_downloader(args).await?,
         Commands::Artwork(args) => artwork_download(args).await?,
         Commands::User(args) => user_download(args).await?,
+        Commands::Follows(args) => download_all_following(args).await?,
     }
 
     Ok(())
@@ -60,6 +61,7 @@ fn tui() -> Result<(), io::Error> {
         ListItem::new("Rank Downloader"),
         ListItem::new("Artworks Downloader"),
         ListItem::new("User Downloader"),
+        ListItem::new("Download all of the following user's artworks"),
     ]);
 
     app_state.init();

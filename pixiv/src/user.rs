@@ -29,6 +29,22 @@ impl User {
 
         Ok(images)
     }
+
+    pub async fn get_following(&self) -> reqwest::Result<Vec<usize>> {
+        let data = reqwest::get(format!(
+            "https://www.pixiv.net/ajax/user/{}/following",
+            self.id
+        ))
+        .await?
+        .error_for_status()?
+        .json::<Api<HashMap<usize, Option<bool>>>>()
+        .await?;
+        let following = data.body.keys().map(|k| k.clone()).collect::<Vec<usize>>();
+
+        println!("{:?}", following);
+
+        Ok(following)
+    }
 }
 
 #[cfg(test)]

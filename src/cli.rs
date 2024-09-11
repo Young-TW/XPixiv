@@ -26,6 +26,7 @@ pub enum Commands {
     Rank(RankArgs),
     Artwork(ArtworkArgs),
     User(UserArgs),
+    Follows(UserArgs),
 }
 
 #[derive(Args, Debug)]
@@ -259,6 +260,25 @@ pub async fn user_download(args: &UserArgs) -> x_pixiv_lib::Result<()> {
                 .unwrap()
                 .finish_with_message(format!("{}-{} Download complete", data.title, index));
         }
+    }
+
+    Ok(())
+}
+
+pub async fn download_all_following(args: &UserArgs) -> x_pixiv_lib::Result<()> {
+    let user = User::new(args.id);
+    let following = user.get_following().await?;
+
+    for id in following {
+        let output_path = PathBuf::from(format!("{}{}", &args.path, id.to_string()));
+
+        let dl_args = UserArgs {
+            path: output_path.to_str().unwrap().to_string(),
+            is_group: args.is_group,
+            id: id,
+        };
+
+        user_download(&dl_args).await?;
     }
 
     Ok(())
