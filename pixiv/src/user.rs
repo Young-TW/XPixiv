@@ -45,6 +45,20 @@ impl User {
 
         Ok(following)
     }
+
+    pub async fn get_likes(&self) -> reqwest::Result<Vec<usize>> {
+        let data = reqwest::get(format!(
+            "https://www.pixiv.net/ajax/user/{}/like",
+            self.id
+        ))
+        .await?
+        .error_for_status()?
+        .json::<Api<HashMap<usize, Option<bool>>>>()
+        .await?;
+        let likes = data.body.keys().map(|k| k.clone()).collect::<Vec<usize>>();
+
+        Ok(likes)
+    }
 }
 
 #[cfg(test)]
