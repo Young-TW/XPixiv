@@ -77,7 +77,7 @@ pub struct RankArgs {
     path_group: Option<String>,
 }
 
-pub fn parse_agrs_type(s: &str) -> RankType {
+pub fn parse_args_type(s: &str) -> RankType {
     use RankType::*;
 
     match s {
@@ -95,7 +95,7 @@ pub fn parse_agrs_type(s: &str) -> RankType {
 
 pub async fn rank_downloader(args: &RankArgs) -> x_pixiv_lib::Result<()> {
     let mut rank = Rank::new(
-        parse_agrs_type(&args.rank_type),
+        parse_args_type(&args.rank_type),
         false,
         args.start..args.end,
     );

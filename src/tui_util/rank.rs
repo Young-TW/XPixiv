@@ -1,5 +1,5 @@
 use super::{data::ConfigData, util::download};
-use crate::cli::parse_agrs_type;
+use crate::cli::parse_args_type;
 use crate::tui_util::compose::Compose;
 use crate::tui_util::data::DownloadInfo;
 use crossterm::event::{Event, KeyCode, MouseEventKind};
@@ -112,7 +112,7 @@ impl<'a> RankState<'a> {
 
     fn get_data(&mut self) {
         let rank_list_clone = self.rank_list.clone();
-        let rank_type = parse_agrs_type(self.tabs[self.tabs_index]);
+        let rank_type = parse_args_type(self.tabs[self.tabs_index]);
         let tab_index = self.tabs_index;
 
         self.rank_list_state.select(Some(0));
